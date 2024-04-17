@@ -1,5 +1,7 @@
 import express from "express";
 import { config } from "dotenv";
+import { PostgresGetUsersRepository } from "./repositories/get-users/postgres-get-users";
+import { GetUsersController } from "./controllers/get-users/get-users";
 
 config();
 
@@ -7,8 +9,14 @@ const app = express();
 
 const port = process.env.PORT || 8000;
 
-app.listen(port, () => console.log(`listening on port ${port}!`));
+app.get("/users", async (req, res) => {
+  const postgresGetUsersRepository = new PostgresGetUsersRepository();
 
-app.get("/", (req, res) => {
-  res.send("Hello world!");
+  const getUsersController = new GetUsersController(postgresGetUsersRepository);
+
+  const { body, statusCode } = await getUsersController.handle();
+
+  res.send(body).status(statusCode);
 });
+
+app.listen(port, () => console.log(`Listening on port ${port}!`));
