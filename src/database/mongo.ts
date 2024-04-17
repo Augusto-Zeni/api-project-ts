@@ -5,7 +5,6 @@ export const MongoClient = {
   db: undefined as unknown as Db,
 
   async connect(): Promise<void> {
-    console.log(process.env.MONGODB_URL);
     const url = process.env.MONGODB_URL || "localhost:27017";
     const username = process.env.MONGODB_USERNAME;
     const password = process.env.MONGODB_PASSWORD;
