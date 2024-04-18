@@ -13,6 +13,10 @@ export class UpdateUserController implements IController {
       const { id } = httpRequest?.params;
       const body = httpRequest?.body;
 
+      if (body?.token != process.env.TOKEN) {
+        return badRequest(`Access Denied.`);
+      }
+
       if (!body) {
         return badRequest("Missing fields.");
       }
@@ -21,15 +25,23 @@ export class UpdateUserController implements IController {
         return badRequest("Missing user id.");
       }
 
+      const updateData: Partial<UpdateUserParams> = {}; // Create an empty object
+
       if (httpRequest.body!.email) {
         const emailValid = validator.isEmail(httpRequest.body!.email);
 
         if (!emailValid) {
           return badRequest("Email is invalid.");
         }
+
+        updateData.email = httpRequest.body!.email;
       }
 
-      const user = await this.updateUserRepository.updateUser(id, body);
+      if (httpRequest.body!.username) {
+        updateData.username = httpRequest.body!.username;
+      }
+
+      const user = await this.updateUserRepository.updateUser(id, updateData);
 
       return ok<User>(user);
     } catch (error) {

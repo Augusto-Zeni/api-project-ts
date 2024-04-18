@@ -11,6 +11,10 @@ export class DeleteUserController implements IController {
     try {
       const { id } = httpRequest?.params;
 
+      if (httpRequest?.body?.token != process.env.TOKEN) {
+        return badRequest(`Access Denied.`);
+      }
+
       if (!id) {
         return badRequest("Missing user id.");
       }

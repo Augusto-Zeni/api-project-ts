@@ -26,7 +26,9 @@ const main = async () => {
 
     const getUsersController = new GetUsersController(mongoGetUsersRepository);
 
-    const { body, statusCode } = await getUsersController.handle();
+    const { body, statusCode } = await getUsersController.handle({
+      body: req.body,
+    });
 
     res.status(statusCode).send(body);
   });
@@ -68,6 +70,7 @@ const main = async () => {
     );
 
     const { body, statusCode } = await deleteUserController.handle({
+      body: req.body,
       params: req.params,
     });
 

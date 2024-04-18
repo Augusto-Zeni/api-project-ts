@@ -14,6 +14,10 @@ export class CreateUserController implements IController {
     try {
       const requiredFields = ["username", "email"];
 
+      if (httpRequest?.body?.token != process.env.TOKEN) {
+        return badRequest(`Access Denied.`);
+      }
+
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof CreateUserParams]?.length) {
           return badRequest(`Field ${field} is required.`);
@@ -26,9 +30,12 @@ export class CreateUserController implements IController {
         return badRequest("Email is invalid.");
       }
 
-      const user = await this.createUserRepository.createUser(
-        httpRequest.body!
-      );
+      const { username, email } = httpRequest.body!;
+
+      const user = await this.createUserRepository.createUser({
+        username,
+        email,
+      });
 
       return created<User>(user);
     } catch (error) {

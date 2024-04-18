@@ -1,6 +1,7 @@
 import { User } from "../../models/user";
 
 export interface UpdateUserParams {
+  token?: string;
   username?: string;
   email?: string;
 }
