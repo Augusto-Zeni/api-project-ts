@@ -4,6 +4,7 @@ import { User } from "../../models/user";
 import { HttpResponse } from "../protocols";
 import { CreateUserParams, ICreateUserRepository } from "./protocols";
 import { badRequest, created, serverError } from "../helpers";
+import { hash, genSalt } from "bcryptjs";
 
 export class CreateUserController implements IController {
   constructor(private readonly createUserRepository: ICreateUserRepository) {}
@@ -12,7 +13,7 @@ export class CreateUserController implements IController {
     httpRequest: HttpRequest<CreateUserParams>
   ): Promise<HttpResponse<User | string>> {
     try {
-      const requiredFields = ["username", "email"];
+      const requiredFields = ["username", "email", "password"];
 
       if (httpRequest?.body?.token != process.env.TOKEN) {
         return badRequest(`Access Denied.`);
@@ -30,11 +31,15 @@ export class CreateUserController implements IController {
         return badRequest("Email is invalid.");
       }
 
-      const { username, email } = httpRequest.body!;
+      const { username, email, password } = httpRequest.body!;
+
+      const salt = await genSalt(10);
+      const passwordHash = await hash(password, salt);
 
       const user = await this.createUserRepository.createUser({
         username,
         email,
+        password: passwordHash,
       });
 
       return created<User>(user);

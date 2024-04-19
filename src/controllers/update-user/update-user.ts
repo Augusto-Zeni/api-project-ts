@@ -3,6 +3,7 @@ import { User } from "../../models/user";
 import { HttpRequest, HttpResponse, IController } from "../protocols";
 import { IUpdateUserRepository, UpdateUserParams } from "./protocols";
 import { badRequest, ok, serverError } from "../helpers";
+import { hash, genSalt } from "bcryptjs";
 
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserRepository: IUpdateUserRepository) {}
@@ -39,6 +40,13 @@ export class UpdateUserController implements IController {
 
       if (httpRequest.body!.username) {
         updateData.username = httpRequest.body!.username;
+      }
+
+      if (httpRequest.body!.username) {
+        const salt = await genSalt(10);
+        const passwordHash = await hash(httpRequest.body!.password!, salt);
+
+        updateData.password = passwordHash!;
       }
 
       const user = await this.updateUserRepository.updateUser(id, updateData);

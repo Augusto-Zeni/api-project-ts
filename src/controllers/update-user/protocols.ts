@@ -4,6 +4,7 @@ export interface UpdateUserParams {
   token?: string;
   username?: string;
   email?: string;
+  password?: string;
 }
 
 export interface IUpdateUserRepository {

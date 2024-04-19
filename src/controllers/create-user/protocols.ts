@@ -4,6 +4,7 @@ export interface CreateUserParams {
   token?: string;
   username: string;
   email: string;
+  password: string;
 }
 
 export interface ICreateUserRepository {
