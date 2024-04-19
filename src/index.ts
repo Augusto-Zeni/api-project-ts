@@ -1,16 +1,24 @@
-import { LoginUserController } from "./controllers/login-user/login-user";
-import { UpdateUserController } from "./controllers/update-user/update-user";
-import { MongoUpdateUserRepository } from "./repositories/update-user/mongo-update-user";
-import { CreateUserController } from "./controllers/create-user/create-user";
+import { LoginUserController } from "./controllers/user/login-user/login-user";
+import { UpdateUserController } from "./controllers/user/update-user/update-user";
+import { MongoUpdateUserRepository } from "./repositories/user/update-user/mongo-update-user";
+import { CreateUserController } from "./controllers/user/create-user/create-user";
 import express from "express";
 import { config } from "dotenv";
-import { MongoGetUsersRepository } from "./repositories/get-users/mongo-get-users";
-import { GetUsersController } from "./controllers/get-users/get-users";
+import { MongoGetUsersRepository } from "./repositories/user/get-users/mongo-get-users";
+import { GetUsersController } from "./controllers/user/get-users/get-users";
 import { MongoClient } from "./database/mongo";
-import { MongoCreateUserRepository } from "./repositories/create-user/mongo-create-user";
-import { DeleteUserController } from "./controllers/delete-user/delete-user";
-import { MongoDeleteUserRepository } from "./repositories/delete-user/mongo-delete-user";
-import { MongoLoginUserRepository } from "./repositories/login-user/mongo-login-user";
+import { MongoCreateUserRepository } from "./repositories/user/create-user/mongo-create-user";
+import { DeleteUserController } from "./controllers/user/delete-user/delete-user";
+import { MongoDeleteUserRepository } from "./repositories/user/delete-user/mongo-delete-user";
+import { MongoLoginUserRepository } from "./repositories/user/login-user/mongo-login-user";
+import { MongoCreateEventRepository } from "./repositories/event/create-event/mongo-create-event";
+import { CreateEventController } from "./controllers/event/create-event/create-event";
+import { MongoGetEventRepository } from "./repositories/event/get-event/mongo-get-event";
+import { GetEventController } from "./controllers/event/get-event/get-event";
+import { MongoUpdateEventRepository } from "./repositories/event/update-event/mongo-update-event";
+import { UpdateEventController } from "./controllers/event/update-event/update-event";
+import { MongoDeleteEventRepository } from "./repositories/event/delete-event/mongo-delete-event";
+import { DeleteEventController } from "./controllers/event/delete-event/delete-event";
 
 const main = async () => {
   config();
@@ -93,6 +101,66 @@ const main = async () => {
 
     const { body, statusCode } = await loginUserController.handle({
       body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Lista todos os eventos
+  app.get("/events", async (req, res) => {
+    const mongoGetEventRepository = new MongoGetEventRepository();
+
+    const getEventController = new GetEventController(mongoGetEventRepository);
+
+    const { body, statusCode } = await getEventController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Cria um evento
+  app.post("/events", async (req, res) => {
+    const mongoCreateEventRepository = new MongoCreateEventRepository();
+
+    const createEventController = new CreateEventController(
+      mongoCreateEventRepository
+    );
+
+    const { body, statusCode } = await createEventController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Atualiza um usuario
+  app.patch("/events/:id", async (req, res) => {
+    const mongoUpdateEventRepository = new MongoUpdateEventRepository();
+
+    const updateEventController = new UpdateEventController(
+      mongoUpdateEventRepository
+    );
+
+    const { body, statusCode } = await updateEventController.handle({
+      body: req.body,
+      params: req.params,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Deleta um usuario
+  app.delete("/events/:id", async (req, res) => {
+    const mongoDeleteEventRepository = new MongoDeleteEventRepository();
+
+    const deleteEventController = new DeleteEventController(
+      mongoDeleteEventRepository
+    );
+
+    const { body, statusCode } = await deleteEventController.handle({
+      body: req.body,
+      params: req.params,
     });
 
     res.status(statusCode).send(body);

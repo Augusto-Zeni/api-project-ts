@@ -15,7 +15,13 @@ export const badRequest = (message: string): HttpResponse<string> => ({
   body: message,
 });
 
-export const serverError = (): HttpResponse<string> => ({
+export const serverError = (error: string): HttpResponse<string> => ({
   statusCode: HttpStatusCode.SERVER_ERROR,
-  body: "Something went wrong.",
+  body: error,
 });
+
+export const tokenValidation = (token: string) => {
+  if (token != process.env.TOKEN) {
+    throw new Error("Access Denied.");
+  }
+};
