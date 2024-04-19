@@ -3,6 +3,7 @@ import { IDeleteUserRepository } from "../../../controllers/user/delete-user/pro
 import { MongoClient } from "../../../database/mongo";
 import { User } from "../../../models/user";
 import { MongoRegistration, MongoUser } from "../../mongo-protocols";
+import { MongoDeleteRegistrationRepository } from "../../registration/delete-registration/mongo-delete-registration";
 
 export class MongoDeleteUserRepository implements IDeleteUserRepository {
   async deleteUser(id: string): Promise<User> {
@@ -20,12 +21,12 @@ export class MongoDeleteUserRepository implements IDeleteUserRepository {
       .toArray();
 
     if (registrations) {
-      const registrationIds = registrations.map(
-        (registration: MongoRegistration) => registration.event
+      const mongoDeleteRegistrationRepository =
+        new MongoDeleteRegistrationRepository();
+
+      registrations.map(({ _id }) =>
+        mongoDeleteRegistrationRepository.deleteRegistration(_id.toHexString())
       );
-      await MongoClient.db
-        .collection("registrations")
-        .deleteMany({ event: { $in: registrationIds } });
     }
 
     const { deletedCount } = await MongoClient.db

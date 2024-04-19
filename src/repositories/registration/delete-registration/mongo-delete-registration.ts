@@ -1,8 +1,10 @@
+import { Attandance } from "./../../../models/attandance";
 import { ObjectId } from "mongodb";
 import { IDeleteRegistrationRepository } from "../../../controllers/registration/delete-registration/protocols";
 import { MongoClient } from "../../../database/mongo";
 import { Registration } from "../../../models/registration";
-import { MongoRegistration } from "../../mongo-protocols";
+import { MongoAttandance, MongoRegistration } from "../../mongo-protocols";
+import { MongoDeleteAttandanceRepository } from "../../attandance/delete-attandance/mongo-delete-attandance";
 
 export class MongoDeleteRegistrationRepository
   implements IDeleteRegistrationRepository
@@ -14,6 +16,20 @@ export class MongoDeleteRegistrationRepository
 
     if (!registration) {
       throw new Error("Registration not found.");
+    }
+
+    const attendaces = await MongoClient.db
+      .collection<MongoAttandance>("attandances")
+      .find({ resgistration: id })
+      .toArray();
+
+    if (attendaces) {
+      const mongoDeleteAttandanceRepository =
+        new MongoDeleteAttandanceRepository();
+
+      attendaces.map(({ _id }) =>
+        mongoDeleteAttandanceRepository.deleteAttandance(_id.toHexString())
+      );
     }
 
     const { deletedCount } = await MongoClient.db

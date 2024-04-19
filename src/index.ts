@@ -25,6 +25,12 @@ import { MongoCreateRegistrationRepository } from "./repositories/registration/c
 import { CreateRegistrationController } from "./controllers/registration/create-registration/create-registration";
 import { DeleteRegistrationController } from "./controllers/registration/delete-registration/delete-registration";
 import { MongoDeleteRegistrationRepository } from "./repositories/registration/delete-registration/mongo-delete-registration";
+import { MongoGetAttandanceRepository } from "./repositories/attandance/get-attandance/mongo-get-attandance";
+import { GetAttandanceController } from "./controllers/attandance/get-attandance/get-attandance";
+import { MongoCreateAttandanceRepository } from "./repositories/attandance/create-attandance/mongo-create-attandance";
+import { CreateAttandanceController } from "./controllers/attandance/create-attandance/create-attandance";
+import { MongoDeleteAttandanceRepository } from "./repositories/attandance/delete-attandance/mongo-delete-attandance";
+import { DeleteAttandanceController } from "./controllers/attandance/delete-attandance/delete-attandance";
 
 const main = async () => {
   config();
@@ -213,6 +219,54 @@ const main = async () => {
     );
 
     const { body, statusCode } = await deleteRegistrationController.handle({
+      body: req.body,
+      params: req.params,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Lista todas as presencas
+  app.get("/attandences", async (req, res) => {
+    const mongoGetAttandanceRepository = new MongoGetAttandanceRepository();
+
+    const getAttandanceController = new GetAttandanceController(
+      mongoGetAttandanceRepository
+    );
+
+    const { body, statusCode } = await getAttandanceController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Cria uma presenca
+  app.post("/attandences", async (req, res) => {
+    const mongoCreateAttandanceRepository =
+      new MongoCreateAttandanceRepository();
+
+    const createAttandanceController = new CreateAttandanceController(
+      mongoCreateAttandanceRepository
+    );
+
+    const { body, statusCode } = await createAttandanceController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Deleta uma presenca
+  app.delete("/attandances/:id", async (req, res) => {
+    const mongoDeleteAttandanceRepository =
+      new MongoDeleteAttandanceRepository();
+
+    const deleteAttandanceController = new DeleteAttandanceController(
+      mongoDeleteAttandanceRepository
+    );
+
+    const { body, statusCode } = await deleteAttandanceController.handle({
       body: req.body,
       params: req.params,
     });
