@@ -19,6 +19,12 @@ import { MongoUpdateEventRepository } from "./repositories/event/update-event/mo
 import { UpdateEventController } from "./controllers/event/update-event/update-event";
 import { MongoDeleteEventRepository } from "./repositories/event/delete-event/mongo-delete-event";
 import { DeleteEventController } from "./controllers/event/delete-event/delete-event";
+import { MongoGetRegistrationRepository } from "./repositories/registration/get-registration/mongo-get-registration";
+import { GetRegistrationController } from "./controllers/registration/get-registration/get-registration";
+import { MongoCreateRegistrationRepository } from "./repositories/registration/create-registration/mongo-create-registration";
+import { CreateRegistrationController } from "./controllers/registration/create-registration/create-registration";
+import { DeleteRegistrationController } from "./controllers/registration/delete-registration/delete-registration";
+import { MongoDeleteRegistrationRepository } from "./repositories/registration/delete-registration/mongo-delete-registration";
 
 const main = async () => {
   config();
@@ -134,7 +140,7 @@ const main = async () => {
     res.status(statusCode).send(body);
   });
 
-  // Atualiza um usuario
+  // Atualiza um evento
   app.patch("/events/:id", async (req, res) => {
     const mongoUpdateEventRepository = new MongoUpdateEventRepository();
 
@@ -150,7 +156,7 @@ const main = async () => {
     res.status(statusCode).send(body);
   });
 
-  // Deleta um usuario
+  // Deleta um evento
   app.delete("/events/:id", async (req, res) => {
     const mongoDeleteEventRepository = new MongoDeleteEventRepository();
 
@@ -159,6 +165,54 @@ const main = async () => {
     );
 
     const { body, statusCode } = await deleteEventController.handle({
+      body: req.body,
+      params: req.params,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Lista todas as inscricoes
+  app.get("/registrations", async (req, res) => {
+    const mongoGetRegistrationRepository = new MongoGetRegistrationRepository();
+
+    const getRegistrationController = new GetRegistrationController(
+      mongoGetRegistrationRepository
+    );
+
+    const { body, statusCode } = await getRegistrationController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Cria uma inscricao
+  app.post("/registrations", async (req, res) => {
+    const mongoCreateRegistrationRepository =
+      new MongoCreateRegistrationRepository();
+
+    const createRegistrationController = new CreateRegistrationController(
+      mongoCreateRegistrationRepository
+    );
+
+    const { body, statusCode } = await createRegistrationController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Deleta uma inscricao
+  app.delete("/registrations/:id", async (req, res) => {
+    const mongoDeleteRegistrationRepository =
+      new MongoDeleteRegistrationRepository();
+
+    const deleteRegistrationController = new DeleteRegistrationController(
+      mongoDeleteRegistrationRepository
+    );
+
+    const { body, statusCode } = await deleteRegistrationController.handle({
       body: req.body,
       params: req.params,
     });

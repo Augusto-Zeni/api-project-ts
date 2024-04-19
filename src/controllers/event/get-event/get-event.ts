@@ -17,7 +17,6 @@ export class GetEventController implements IController {
 
       return ok<Event[]>(events);
     } catch (error) {
-      console.log(error);
       return serverError(`${error}`);
     }
   }

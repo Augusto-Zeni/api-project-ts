@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { IDeleteUserRepository } from "../../../controllers/user/delete-user/protocols";
 import { MongoClient } from "../../../database/mongo";
 import { User } from "../../../models/user";
-import { MongoUser } from "../../mongo-protocols";
+import { MongoRegistration, MongoUser } from "../../mongo-protocols";
 
 export class MongoDeleteUserRepository implements IDeleteUserRepository {
   async deleteUser(id: string): Promise<User> {
@@ -12,6 +12,20 @@ export class MongoDeleteUserRepository implements IDeleteUserRepository {
 
     if (!user) {
       throw new Error("User not found.");
+    }
+
+    const registrations = await MongoClient.db
+      .collection<MongoRegistration>("registrations")
+      .find({ user: id })
+      .toArray();
+
+    if (registrations) {
+      const registrationIds = registrations.map(
+        (registration: MongoRegistration) => registration.event
+      );
+      await MongoClient.db
+        .collection("registrations")
+        .deleteMany({ event: { $in: registrationIds } });
     }
 
     const { deletedCount } = await MongoClient.db
