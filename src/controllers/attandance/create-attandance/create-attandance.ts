@@ -30,7 +30,7 @@ export class CreateAttandanceController implements IController {
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof CreateAttandanceParams]) {
-          return badRequest("O campo ${field} é obrigatório.");
+          return badRequest(`O campo ${field} é obrigatório.`);
         }
       }
 

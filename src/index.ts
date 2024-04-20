@@ -31,6 +31,7 @@ import { MongoCreateAttandanceRepository } from "./repositories/attandance/creat
 import { CreateAttandanceController } from "./controllers/attandance/create-attandance/create-attandance";
 import { MongoDeleteAttandanceRepository } from "./repositories/attandance/delete-attandance/mongo-delete-attandance";
 import { DeleteAttandanceController } from "./controllers/attandance/delete-attandance/delete-attandance";
+import { SendEmailController } from "./controllers/email/send-email/send-email";
 
 const main = async () => {
   config();
@@ -269,6 +270,17 @@ const main = async () => {
     const { body, statusCode } = await deleteAttandanceController.handle({
       body: req.body,
       params: req.params,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  // Envia um email
+  app.post("/send-email", async (req, res) => {
+    const sendEmailController = new SendEmailController();
+
+    const { body, statusCode } = await sendEmailController.handle({
+      body: req.body,
     });
 
     res.status(statusCode).send(body);

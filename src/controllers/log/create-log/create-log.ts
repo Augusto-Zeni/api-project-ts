@@ -1,13 +1,4 @@
-import { HttpRequest, IController } from "../../protocols";
-import { Log } from "../../../models/log";
-import { HttpResponse } from "../../protocols";
-import { CreateLogParams, ICreateLogRepository } from "./protocols";
-import {
-  badRequest,
-  created,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { ICreateLogRepository } from "./protocols";
 
 export class CreateLogController {
   constructor(private readonly createLogRepository: ICreateLogRepository) {}
