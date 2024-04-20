@@ -5,6 +5,7 @@ import { HttpResponse } from "../../protocols";
 import { CreateUserParams, ICreateUserRepository } from "./protocols";
 import {
   badRequest,
+  createLog,
   created,
   serverError,
   tokenValidation,
@@ -18,6 +19,8 @@ export class CreateUserController implements IController {
     httpRequest: HttpRequest<CreateUserParams>
   ): Promise<HttpResponse<User | string>> {
     try {
+      createLog(`User create: ${JSON.stringify(httpRequest.body)}`);
+
       const requiredFields = ["username", "email", "password"];
 
       tokenValidation(httpRequest?.body?.token!);

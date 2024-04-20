@@ -7,6 +7,7 @@ import {
 } from "./protocols";
 import {
   badRequest,
+  createLog,
   created,
   serverError,
   tokenValidation,
@@ -21,6 +22,8 @@ export class CreateRegistrationController implements IController {
     httpRequest: HttpRequest<CreateRegistrationParams>
   ): Promise<HttpResponse<Registration | string>> {
     try {
+      createLog(`Registration create: ${JSON.stringify(httpRequest.body)}`);
+
       const requiredFields = ["user", "event", "registrationDate"];
 
       tokenValidation(httpRequest?.body?.token!);

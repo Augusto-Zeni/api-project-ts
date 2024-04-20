@@ -1,4 +1,10 @@
-import { badRequest, serverError, ok, tokenValidation } from "../../helpers";
+import {
+  badRequest,
+  serverError,
+  ok,
+  tokenValidation,
+  createLog,
+} from "../../helpers";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { ILoginUserRepository, LoginUserParams } from "./protocols";
 
@@ -8,6 +14,10 @@ export class LoginUserController implements IController {
     httpRequest: HttpRequest<LoginUserParams>
   ): Promise<HttpResponse<string>> {
     try {
+      createLog(`User login: ${JSON.stringify(httpRequest.body)}`);
+
+      console.log(`User login: ${httpRequest.body}`, httpRequest.body);
+
       const body = httpRequest?.body;
 
       if (!body) {

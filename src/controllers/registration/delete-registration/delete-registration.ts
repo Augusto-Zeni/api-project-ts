@@ -1,7 +1,13 @@
 import { Registration } from "../../../models/registration";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IDeleteRegistrationRepository } from "./protocols";
-import { badRequest, ok, serverError, tokenValidation } from "../../helpers";
+import {
+  badRequest,
+  createLog,
+  ok,
+  serverError,
+  tokenValidation,
+} from "../../helpers";
 
 export class DeleteRegistrationController implements IController {
   constructor(
@@ -11,6 +17,8 @@ export class DeleteRegistrationController implements IController {
     httpRequest: HttpRequest<any>
   ): Promise<HttpResponse<Registration | string>> {
     try {
+      createLog(`Registration delete: ${JSON.stringify(httpRequest.body)}`);
+
       const { id } = httpRequest?.params;
 
       tokenValidation(httpRequest.body.token);

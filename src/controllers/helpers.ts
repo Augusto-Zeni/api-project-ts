@@ -1,3 +1,5 @@
+import { MongoCreateLogRepository } from "../repositories/log/create-log/mongo-create-log";
+import { CreateLogController } from "./log/create-log/create-log";
 import { HttpResponse, HttpStatusCode } from "./protocols";
 
 export const ok = <T>(body: any): HttpResponse<T> => ({
@@ -24,4 +26,12 @@ export const tokenValidation = (token: string) => {
   if (token != process.env.TOKEN) {
     throw new Error("Access Denied.");
   }
+};
+
+export const createLog = (message: string) => {
+  const mongoCreateLogRepository = new MongoCreateLogRepository();
+
+  const createLogController = new CreateLogController(mongoCreateLogRepository);
+
+  createLogController.handle(message);
 };

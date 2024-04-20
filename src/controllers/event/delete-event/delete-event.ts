@@ -1,7 +1,13 @@
 import { Event } from "../../../models/event";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IDeleteEventRepository } from "./protocols";
-import { badRequest, ok, serverError, tokenValidation } from "../../helpers";
+import {
+  badRequest,
+  createLog,
+  ok,
+  serverError,
+  tokenValidation,
+} from "../../helpers";
 
 export class DeleteEventController implements IController {
   constructor(private readonly deleteEventRepository: IDeleteEventRepository) {}
@@ -9,6 +15,8 @@ export class DeleteEventController implements IController {
     httpRequest: HttpRequest<any>
   ): Promise<HttpResponse<Event | string>> {
     try {
+      createLog(`Event delete: ${JSON.stringify(httpRequest?.body)}`);
+
       const { id } = httpRequest?.params;
 
       tokenValidation(httpRequest.body.token);

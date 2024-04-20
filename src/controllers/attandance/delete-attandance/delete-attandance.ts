@@ -1,7 +1,13 @@
 import { Attandance } from "../../../models/attandance";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IDeleteAttandanceRepository } from "./protocols";
-import { badRequest, ok, serverError, tokenValidation } from "../../helpers";
+import {
+  badRequest,
+  createLog,
+  ok,
+  serverError,
+  tokenValidation,
+} from "../../helpers";
 
 export class DeleteAttandanceController implements IController {
   constructor(
@@ -11,6 +17,8 @@ export class DeleteAttandanceController implements IController {
     httpRequest: HttpRequest<any>
   ): Promise<HttpResponse<Attandance | string>> {
     try {
+      createLog(`Attandance delete: ${JSON.stringify(httpRequest?.params)}`);
+
       const { id } = httpRequest?.params;
 
       tokenValidation(httpRequest.body.token);

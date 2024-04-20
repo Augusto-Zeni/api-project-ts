@@ -2,7 +2,13 @@ import validator from "validator";
 import { Event } from "../../../models/event";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IUpdateEventRepository, UpdateEventParams } from "./protocols";
-import { badRequest, ok, serverError, tokenValidation } from "../../helpers";
+import {
+  badRequest,
+  createLog,
+  ok,
+  serverError,
+  tokenValidation,
+} from "../../helpers";
 import { hash, genSalt } from "bcryptjs";
 
 export class UpdateEventController implements IController {
@@ -11,6 +17,8 @@ export class UpdateEventController implements IController {
     httpRequest: HttpRequest<UpdateEventParams>
   ): Promise<HttpResponse<Event | string>> {
     try {
+      createLog(`Event update: ${JSON.stringify(httpRequest.body)}`);
+
       const { id } = httpRequest?.params;
       const body = httpRequest?.body;
 

@@ -4,6 +4,7 @@ import { HttpResponse } from "../../protocols";
 import { CreateEventParams, ICreateEventRepository } from "./protocols";
 import {
   badRequest,
+  createLog,
   created,
   serverError,
   tokenValidation,
@@ -16,6 +17,8 @@ export class CreateEventController implements IController {
     httpRequest: HttpRequest<CreateEventParams>
   ): Promise<HttpResponse<Event | string>> {
     try {
+      createLog(`Event create: ${JSON.stringify(httpRequest?.body)}`);
+
       const requiredFields = ["name", "location"];
 
       tokenValidation(httpRequest?.body?.token!);

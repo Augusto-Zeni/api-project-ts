@@ -2,7 +2,13 @@ import validator from "validator";
 import { User } from "../../../models/user";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IUpdateUserRepository, UpdateUserParams } from "./protocols";
-import { badRequest, ok, serverError, tokenValidation } from "../../helpers";
+import {
+  badRequest,
+  createLog,
+  ok,
+  serverError,
+  tokenValidation,
+} from "../../helpers";
 import { hash, genSalt } from "bcryptjs";
 
 export class UpdateUserController implements IController {
@@ -11,6 +17,8 @@ export class UpdateUserController implements IController {
     httpRequest: HttpRequest<UpdateUserParams>
   ): Promise<HttpResponse<User | string>> {
     try {
+      createLog(`User update: ${JSON.stringify(httpRequest.body)}`);
+
       const { id } = httpRequest?.params;
       const body = httpRequest?.body;
 

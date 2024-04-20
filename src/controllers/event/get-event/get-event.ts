@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols";
 import { Event } from "../../../models/event";
-import { serverError, ok, tokenValidation } from "../../helpers";
+import { serverError, ok, tokenValidation, createLog } from "../../helpers";
 import { IController } from "../../protocols";
 import { IGetEventRepository } from "./protocols";
 
@@ -11,6 +11,8 @@ export class GetEventController implements IController {
     httpRequest: HttpRequest<any>
   ): Promise<HttpResponse<Event[] | string>> {
     try {
+      createLog(`Event get`);
+
       const events = await this.getEventRepository.getEvents();
 
       tokenValidation(httpRequest.body.token);

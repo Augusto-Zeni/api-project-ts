@@ -1,7 +1,13 @@
 import { User } from "../../../models/user";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IDeleteUserRepository } from "./protocols";
-import { badRequest, ok, serverError, tokenValidation } from "../../helpers";
+import {
+  badRequest,
+  createLog,
+  ok,
+  serverError,
+  tokenValidation,
+} from "../../helpers";
 
 export class DeleteUserController implements IController {
   constructor(private readonly deleteUserRepository: IDeleteUserRepository) {}
@@ -9,6 +15,8 @@ export class DeleteUserController implements IController {
     httpRequest: HttpRequest<any>
   ): Promise<HttpResponse<User | string>> {
     try {
+      createLog(`User delete: ${JSON.stringify(httpRequest.body)}`);
+
       const { id } = httpRequest?.params;
 
       tokenValidation(httpRequest.body.token);

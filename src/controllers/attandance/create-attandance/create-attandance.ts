@@ -7,6 +7,7 @@ import {
 } from "./protocols";
 import {
   badRequest,
+  createLog,
   created,
   serverError,
   tokenValidation,
@@ -21,6 +22,8 @@ export class CreateAttandanceController implements IController {
     httpRequest: HttpRequest<CreateAttandanceParams>
   ): Promise<HttpResponse<Attandance | string>> {
     try {
+      createLog(`Attandance create: ${JSON.stringify(httpRequest?.body)}`);
+
       const requiredFields = ["resgistration", "attandanceDate"];
 
       tokenValidation(httpRequest?.body?.token!);
