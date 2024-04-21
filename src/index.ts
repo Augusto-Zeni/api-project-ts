@@ -1,9 +1,10 @@
+import express from "express";
+import { config } from "dotenv";
+import { ensureAuthenticated } from "./middleware";
 import { LoginUserController } from "./controllers/user/login-user/login-user";
 import { UpdateUserController } from "./controllers/user/update-user/update-user";
 import { MongoUpdateUserRepository } from "./repositories/user/update-user/mongo-update-user";
 import { CreateUserController } from "./controllers/user/create-user/create-user";
-import express from "express";
-import { config } from "dotenv";
 import { MongoGetUsersRepository } from "./repositories/user/get-users/mongo-get-users";
 import { GetUsersController } from "./controllers/user/get-users/get-users";
 import { MongoClient } from "./database/mongo";
@@ -45,7 +46,7 @@ const main = async () => {
   await MongoClient.connect();
 
   // Lista todos os usuarios
-  app.get("/users", async (req, res) => {
+  app.get("/users", ensureAuthenticated, async (req, res) => {
     const mongoGetUsersRepository = new MongoGetUsersRepository();
 
     const getUsersController = new GetUsersController(mongoGetUsersRepository);
@@ -58,7 +59,7 @@ const main = async () => {
   });
 
   // Cria um usuario
-  app.post("/users", async (req, res) => {
+  app.post("/users", ensureAuthenticated, async (req, res) => {
     const mongoCreateUserRepository = new MongoCreateUserRepository();
 
     const createUserController = new CreateUserController(
@@ -73,7 +74,7 @@ const main = async () => {
   });
 
   // Atualiza um usuario
-  app.patch("/users/:id", async (req, res) => {
+  app.patch("/users/:id", ensureAuthenticated, async (req, res) => {
     const mongoUpdateUserRepository = new MongoUpdateUserRepository();
 
     const updateUserController = new UpdateUserController(
@@ -89,7 +90,7 @@ const main = async () => {
   });
 
   // Deleta um usuario
-  app.delete("/users/:id", async (req, res) => {
+  app.delete("/users/:id", ensureAuthenticated, async (req, res) => {
     const mongoDeleteUserRepository = new MongoDeleteUserRepository();
 
     const deleteUserController = new DeleteUserController(
@@ -105,7 +106,7 @@ const main = async () => {
   });
 
   // Login
-  app.get("/users/login", async (req, res) => {
+  app.get("/users/login", ensureAuthenticated, async (req, res) => {
     const mongoLoginUsersRepository = new MongoLoginUserRepository();
 
     const loginUserController = new LoginUserController(
@@ -120,7 +121,7 @@ const main = async () => {
   });
 
   // Lista todos os eventos
-  app.get("/events", async (req, res) => {
+  app.get("/events", ensureAuthenticated, async (req, res) => {
     const mongoGetEventRepository = new MongoGetEventRepository();
 
     const getEventController = new GetEventController(mongoGetEventRepository);
@@ -133,7 +134,7 @@ const main = async () => {
   });
 
   // Cria um evento
-  app.post("/events", async (req, res) => {
+  app.post("/events", ensureAuthenticated, async (req, res) => {
     const mongoCreateEventRepository = new MongoCreateEventRepository();
 
     const createEventController = new CreateEventController(
@@ -148,7 +149,7 @@ const main = async () => {
   });
 
   // Atualiza um evento
-  app.patch("/events/:id", async (req, res) => {
+  app.patch("/events/:id", ensureAuthenticated, async (req, res) => {
     const mongoUpdateEventRepository = new MongoUpdateEventRepository();
 
     const updateEventController = new UpdateEventController(
@@ -164,7 +165,7 @@ const main = async () => {
   });
 
   // Deleta um evento
-  app.delete("/events/:id", async (req, res) => {
+  app.delete("/events/:id", ensureAuthenticated, async (req, res) => {
     const mongoDeleteEventRepository = new MongoDeleteEventRepository();
 
     const deleteEventController = new DeleteEventController(
@@ -180,7 +181,7 @@ const main = async () => {
   });
 
   // Lista todas as inscricoes
-  app.get("/registrations", async (req, res) => {
+  app.get("/registrations", ensureAuthenticated, async (req, res) => {
     const mongoGetRegistrationRepository = new MongoGetRegistrationRepository();
 
     const getRegistrationController = new GetRegistrationController(
@@ -195,7 +196,7 @@ const main = async () => {
   });
 
   // Cria uma inscricao
-  app.post("/registrations", async (req, res) => {
+  app.post("/registrations", ensureAuthenticated, async (req, res) => {
     const mongoCreateRegistrationRepository =
       new MongoCreateRegistrationRepository();
 
@@ -211,7 +212,7 @@ const main = async () => {
   });
 
   // Deleta uma inscricao
-  app.delete("/registrations/:id", async (req, res) => {
+  app.delete("/registrations/:id", ensureAuthenticated, async (req, res) => {
     const mongoDeleteRegistrationRepository =
       new MongoDeleteRegistrationRepository();
 
@@ -228,7 +229,7 @@ const main = async () => {
   });
 
   // Lista todas as presencas
-  app.get("/attandences", async (req, res) => {
+  app.get("/attandences", ensureAuthenticated, async (req, res) => {
     const mongoGetAttandanceRepository = new MongoGetAttandanceRepository();
 
     const getAttandanceController = new GetAttandanceController(
@@ -243,7 +244,7 @@ const main = async () => {
   });
 
   // Cria uma presenca
-  app.post("/attandences", async (req, res) => {
+  app.post("/attandences", ensureAuthenticated, async (req, res) => {
     const mongoCreateAttandanceRepository =
       new MongoCreateAttandanceRepository();
 
@@ -259,7 +260,7 @@ const main = async () => {
   });
 
   // Deleta uma presenca
-  app.delete("/attandances/:id", async (req, res) => {
+  app.delete("/attandances/:id", ensureAuthenticated, async (req, res) => {
     const mongoDeleteAttandanceRepository =
       new MongoDeleteAttandanceRepository();
 
@@ -276,7 +277,7 @@ const main = async () => {
   });
 
   // Envia um email
-  app.post("/send-email", async (req, res) => {
+  app.post("/send-email", ensureAuthenticated, async (req, res) => {
     const sendEmailController = new SendEmailController();
 
     const { body, statusCode } = await sendEmailController.handle({

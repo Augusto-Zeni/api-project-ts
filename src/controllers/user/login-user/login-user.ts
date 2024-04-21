@@ -1,10 +1,4 @@
-import {
-  badRequest,
-  serverError,
-  ok,
-  tokenValidation,
-  createLog,
-} from "../../helpers";
+import { badRequest, serverError, ok, createLog } from "../../helpers";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { ILoginUserRepository, LoginUserParams } from "./protocols";
 
@@ -16,15 +10,11 @@ export class LoginUserController implements IController {
     try {
       createLog(`User login: ${JSON.stringify(httpRequest.body)}`);
 
-      console.log(`User login: ${httpRequest.body}`, httpRequest.body);
-
       const body = httpRequest?.body;
 
       if (!body) {
         return badRequest("Missing fields.");
       }
-
-      tokenValidation(body.token!);
 
       const allowedFieldsToUpdate: (keyof LoginUserParams)[] = [
         "username",

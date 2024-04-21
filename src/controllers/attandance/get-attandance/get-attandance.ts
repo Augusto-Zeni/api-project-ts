@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols";
 import { Attandance } from "../../../models/attandance";
-import { serverError, ok, tokenValidation, createLog } from "../../helpers";
+import { serverError, ok, createLog } from "../../helpers";
 import { IController } from "../../protocols";
 import { IGetAttandanceRepository } from "./protocols";
 
@@ -16,8 +16,6 @@ export class GetAttandanceController implements IController {
       createLog(`Attandance get`);
 
       const attandances = await this.getAttandanceRepository.getAttandances();
-
-      tokenValidation(httpRequest.body.token);
 
       return ok<Attandance[]>(attandances);
     } catch (error) {

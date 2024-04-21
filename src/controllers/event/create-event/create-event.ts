@@ -2,13 +2,7 @@ import { HttpRequest, IController } from "../../protocols";
 import { Event } from "../../../models/event";
 import { HttpResponse } from "../../protocols";
 import { CreateEventParams, ICreateEventRepository } from "./protocols";
-import {
-  badRequest,
-  createLog,
-  created,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, created, serverError } from "../../helpers";
 
 export class CreateEventController implements IController {
   constructor(private readonly createEventRepository: ICreateEventRepository) {}
@@ -20,8 +14,6 @@ export class CreateEventController implements IController {
       createLog(`Event create: ${JSON.stringify(httpRequest?.body)}`);
 
       const requiredFields = ["name", "location"];
-
-      tokenValidation(httpRequest?.body?.token!);
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof CreateEventParams]?.length) {

@@ -5,13 +5,7 @@ import {
   CreateRegistrationParams,
   ICreateRegistrationRepository,
 } from "./protocols";
-import {
-  badRequest,
-  createLog,
-  created,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, created, serverError } from "../../helpers";
 
 export class CreateRegistrationController implements IController {
   constructor(
@@ -25,8 +19,6 @@ export class CreateRegistrationController implements IController {
       createLog(`Registration create: ${JSON.stringify(httpRequest.body)}`);
 
       const requiredFields = ["user", "event", "registrationDate"];
-
-      tokenValidation(httpRequest?.body?.token!);
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof CreateRegistrationParams]) {

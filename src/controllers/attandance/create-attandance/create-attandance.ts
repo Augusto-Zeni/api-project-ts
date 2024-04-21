@@ -5,13 +5,7 @@ import {
   CreateAttandanceParams,
   ICreateAttandanceRepository,
 } from "./protocols";
-import {
-  badRequest,
-  createLog,
-  created,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, created, serverError } from "../../helpers";
 
 export class CreateAttandanceController implements IController {
   constructor(
@@ -25,8 +19,6 @@ export class CreateAttandanceController implements IController {
       createLog(`Attandance create: ${JSON.stringify(httpRequest?.body)}`);
 
       const requiredFields = ["resgistration", "attandanceDate"];
-
-      tokenValidation(httpRequest?.body?.token!);
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof CreateAttandanceParams]) {

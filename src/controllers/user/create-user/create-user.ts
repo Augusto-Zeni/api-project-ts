@@ -3,13 +3,7 @@ import { HttpRequest, IController } from "../../protocols";
 import { User } from "../../../models/user";
 import { HttpResponse } from "../../protocols";
 import { CreateUserParams, ICreateUserRepository } from "./protocols";
-import {
-  badRequest,
-  createLog,
-  created,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, created, serverError } from "../../helpers";
 import { hash, genSalt } from "bcryptjs";
 
 export class CreateUserController implements IController {
@@ -22,8 +16,6 @@ export class CreateUserController implements IController {
       createLog(`User create: ${JSON.stringify(httpRequest.body)}`);
 
       const requiredFields = ["username", "email", "password"];
-
-      tokenValidation(httpRequest?.body?.token!);
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof CreateUserParams]?.length) {

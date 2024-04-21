@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols";
 import { User } from "../../../models/user";
-import { serverError, ok, tokenValidation, createLog } from "../../helpers";
+import { serverError, ok, createLog } from "../../helpers";
 import { IController } from "../../protocols";
 import { IGetUsersRepository } from "./protocols";
 
@@ -14,8 +14,6 @@ export class GetUsersController implements IController {
       createLog(`User get`);
 
       const users = await this.getUsersRepository.getUsers();
-
-      tokenValidation(httpRequest.body.token);
 
       return ok<User[]>(users);
     } catch (error) {

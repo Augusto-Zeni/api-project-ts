@@ -2,13 +2,7 @@ import validator from "validator";
 import { User } from "../../../models/user";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IUpdateUserRepository, UpdateUserParams } from "./protocols";
-import {
-  badRequest,
-  createLog,
-  ok,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, ok, serverError } from "../../helpers";
 import { hash, genSalt } from "bcryptjs";
 
 export class UpdateUserController implements IController {
@@ -29,8 +23,6 @@ export class UpdateUserController implements IController {
       if (!id) {
         return badRequest("Missing user id.");
       }
-
-      tokenValidation(body.token!);
 
       const updateData: Partial<UpdateUserParams> = {}; // Create an empty object
 

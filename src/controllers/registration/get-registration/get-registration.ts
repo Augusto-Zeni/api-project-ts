@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols";
 import { Registration } from "../../../models/registration";
-import { serverError, ok, tokenValidation, createLog } from "../../helpers";
+import { serverError, ok, createLog } from "../../helpers";
 import { IController } from "../../protocols";
 import { IGetRegistrationRepository } from "./protocols";
 
@@ -17,8 +17,6 @@ export class GetRegistrationController implements IController {
 
       const registrations =
         await this.getRegistrationRepository.getRegistrations();
-
-      tokenValidation(httpRequest.body.token);
 
       return ok<Registration[]>(registrations);
     } catch (error) {

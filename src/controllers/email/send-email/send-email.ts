@@ -2,13 +2,7 @@ import { HttpRequest, IController } from "../../protocols";
 import { HttpResponse } from "../../protocols";
 import { SendEmailParams } from "./protocols";
 import nodemailer from "nodemailer";
-import {
-  badRequest,
-  createLog,
-  created,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, created, serverError } from "../../helpers";
 
 export class SendEmailController implements IController {
   async handle(
@@ -18,8 +12,6 @@ export class SendEmailController implements IController {
       createLog(`Email send: ${JSON.stringify(httpRequest.body)}`);
 
       const requiredFields = ["subject", "to", "text"];
-
-      tokenValidation(httpRequest?.body?.token!);
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof SendEmailParams]) {

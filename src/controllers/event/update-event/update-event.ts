@@ -2,13 +2,7 @@ import validator from "validator";
 import { Event } from "../../../models/event";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IUpdateEventRepository, UpdateEventParams } from "./protocols";
-import {
-  badRequest,
-  createLog,
-  ok,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, ok, serverError } from "../../helpers";
 import { hash, genSalt } from "bcryptjs";
 
 export class UpdateEventController implements IController {
@@ -29,8 +23,6 @@ export class UpdateEventController implements IController {
       if (!id) {
         return badRequest("Missing event id.");
       }
-
-      tokenValidation(body.token!);
 
       const updateData: Partial<UpdateEventParams> = {};
 

@@ -22,12 +22,6 @@ export const serverError = (error: string): HttpResponse<string> => ({
   body: error,
 });
 
-export const tokenValidation = (token: string) => {
-  if (token != process.env.TOKEN) {
-    throw new Error("Access Denied.");
-  }
-};
-
 export const createLog = (message: string) => {
   const mongoCreateLogRepository = new MongoCreateLogRepository();
 

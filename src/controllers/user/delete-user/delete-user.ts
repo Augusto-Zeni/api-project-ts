@@ -1,13 +1,7 @@
 import { User } from "../../../models/user";
 import { HttpRequest, HttpResponse, IController } from "../../protocols";
 import { IDeleteUserRepository } from "./protocols";
-import {
-  badRequest,
-  createLog,
-  ok,
-  serverError,
-  tokenValidation,
-} from "../../helpers";
+import { badRequest, createLog, ok, serverError } from "../../helpers";
 
 export class DeleteUserController implements IController {
   constructor(private readonly deleteUserRepository: IDeleteUserRepository) {}
@@ -18,8 +12,6 @@ export class DeleteUserController implements IController {
       createLog(`User delete: ${JSON.stringify(httpRequest.body)}`);
 
       const { id } = httpRequest?.params;
-
-      tokenValidation(httpRequest.body.token);
 
       if (!id) {
         return badRequest("Missing user id.");
