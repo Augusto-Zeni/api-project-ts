@@ -1,0 +1,603 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Events - API",
+    "description": "Documentation from events api",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Gets all users.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Create an user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "description": "Delete an user.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "description": "Update an user.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Login.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": ["Events"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Gets all events.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Events"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Create an event.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "location": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "patch": {
+        "description": "Update an event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "description": "Delete an event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/registrations": {
+      "get": {
+        "tags": ["Registrations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Gets all registrations.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Registrations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Create a registration.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "event": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "registrationDate": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    },
+    "/registrations/{id}": {
+      "delete": {
+        "description": "Delete a registrations.",
+        "tags": ["Registrations"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/attandences": {
+      "get": {
+        "tags": ["Attandences"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Gets all attandences.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Attandences"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Create an attandence.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resgistration": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "attandanceDate": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    },
+    "/attandences/{id}": {
+      "delete": {
+        "description": "Delete an attandence.",
+        "tags": ["Attandences"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/send-email": {
+      "post": {
+        "tags": ["Emails"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Send an email.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Something went wrong."
+          },
+          "401": {
+            "description": "Access denied."
+          },
+          "500": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    }
+  }
+}

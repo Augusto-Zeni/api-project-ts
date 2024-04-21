@@ -1,4 +1,6 @@
 import express from "express";
+import swaggerUI from "swagger-ui-express";
+import swaggerDocument from "./swagger.json";
 import { config } from "dotenv";
 import { ensureAuthenticated } from "./middleware";
 import { LoginUserController } from "./controllers/user/login-user/login-user";
@@ -106,7 +108,7 @@ const main = async () => {
   });
 
   // Login
-  app.get("/users/login", ensureAuthenticated, async (req, res) => {
+  app.post("/users/login", ensureAuthenticated, async (req, res) => {
     const mongoLoginUsersRepository = new MongoLoginUserRepository();
 
     const loginUserController = new LoginUserController(
@@ -286,6 +288,8 @@ const main = async () => {
 
     res.status(statusCode).send(body);
   });
+
+  app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
   app.listen(port, () => console.log(`Listening on port ${port}!`));
 };
