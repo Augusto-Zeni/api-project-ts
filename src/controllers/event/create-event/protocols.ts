@@ -1,7 +1,6 @@
 import { Event } from "../../../models/event";
 
 export interface CreateEventParams {
-  token?: string;
   name: string;
   location: string;
 }

@@ -1,7 +1,6 @@
 import { Registration } from "../../../models/registration";
 
 export interface CreateRegistrationParams {
-  token?: string;
   user: string;
   event: string;
   registrationDate: Date;
